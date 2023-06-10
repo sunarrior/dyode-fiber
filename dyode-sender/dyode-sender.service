@@ -1,0 +1,15 @@
+[Unit]
+Description=Dyode-Sender service
+ConditionPathExists=/opt/dyode-sender/dyode-sender.py
+After=syslog.target network.target
+Wants=network.service
+
+[Service]
+User=highside
+WorkingDirectory=/opt/dyode-sender/
+ExecStart=/usr/bin/python /opt/dyode-sender/dyode-sender.py
+Restart=on-failure
+
+[Install]
+Alias=dyode-out
+WantedBy=multi-user.target
