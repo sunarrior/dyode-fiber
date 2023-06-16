@@ -1,0 +1,23 @@
+config_name: "Dyode Receiver"
+config_version: 1.0
+config_date: 10-06-2023
+
+max_bitrate: 100 # maximum bitrate
+
+dyode_sender:
+  ip: 172.10.0.1
+  mac: 40:16:7e:a9:fc:0f
+
+dyode_receiver:
+  interface: eth1
+    
+
+modules:
+  filereceiver:
+    type: filereceiver
+    port: 9700
+    bitrate: 50 # in Mb/s
+    timeout: 10  # in second
+    fec: "4x4"   # forward error correction
+    out: /home/suna/dyode
+    temp: /data/temp
