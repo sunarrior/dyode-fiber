@@ -24,7 +24,7 @@ def list_all_files(root_dir):
 
 def write_manifest(dirs, files, files_hash, manifest_filename, root, new):
     data = {'dirs': [d.replace(root, new, 1) for d in dirs], 'files': []}
-    log.debug([d.replace(root, new, 1) for d in dirs])
+    log.debug(f'dirs: {data["dirs"]}')
     for f in files:
         data['files'].append([f.replace(root, new, 1), files_hash[f]])
         log.debug(f + ' :: ' + files_hash[f])
@@ -39,7 +39,7 @@ def send_file(file_path, interface, ip_out, port_base, max_bitrate, fec):
                 --portbase {port_base} --autostart 1 \
                 --interface {interface} -f "{file_path}"'
     log.debug(command)
-    (_, err) = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
+    (_, err) = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()
     if err:
       log.error(err)
     time.sleep(1.5)

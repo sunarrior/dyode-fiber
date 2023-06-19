@@ -6,6 +6,7 @@ import pyinotify
 import yaml
 
 import filetransfer
+import screensharing
 
 # Logging
 logging.basicConfig()
@@ -38,6 +39,9 @@ def launch_agents(module, properties):
     if properties['type'] == 'filetransfer':
         log.debug(f'Instanciating a file transfer module :: {module}')
         watch_folder(properties)
+    elif properties['type'] == 'screen':
+        log.debug('Screen sharing agent : %s' % module)
+        screensharing.watch_folder(module, properties)
 
 
 if __name__ == '__main__':

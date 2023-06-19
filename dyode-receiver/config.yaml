@@ -22,3 +22,19 @@ modules:
     in: /home/highside/dyode
     out: /home/lowside/dyode
     temp: /home/lowside/temp
+  # modbus:
+  #   type: modbus
+  #   port: 9500
+  #   ip: 127.0.0.1
+  #   port_out: 503
+  #   registers:
+  #     - 0-10
+  #     - 400-402
+  #   coils:
+  #     - 0-10
+  #     - 100-110
+  screen:
+    type: screen
+    port: 9900
+    in: /home/highside/screen
+    out: /home/lowside/screen
