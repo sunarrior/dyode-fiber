@@ -11,5 +11,5 @@ ExecStart=/usr/bin/python /opt/dyode-sender/dyode-sender.py
 Restart=on-failure
 
 [Install]
-Alias=dyode-out
+Alias=dyode-in
 WantedBy=multi-user.target

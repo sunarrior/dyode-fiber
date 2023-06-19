@@ -15,16 +15,10 @@ This project base on repository: [amirhakh - dyode-half-fiber](https://github.co
 
 ## **Installation dependencies**
 ```shell
-sudo pip install PyYAML
-
-or 
-
-sudo pip install requirement.txt
+sudo apt install udpcast
+sudo pip install -r requirement.txt
 ```
 
 ## **Developing function**
-
----
-
 1. File transfer
 
