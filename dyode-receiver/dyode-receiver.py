@@ -10,7 +10,7 @@ log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 
 def launch_agents(module, properties):
-    if properties['type'] == 'folder':
+    if properties['type'] == 'filereceiver':
         log.debug('Instanciating a file transfer module :: %s' % module)
         filereceiver.file_reception_loop(properties)
 

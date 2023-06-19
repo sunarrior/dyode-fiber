@@ -33,13 +33,13 @@ def write_manifest(dirs, files, files_hash, manifest_filename, root, new):
         json.dump(data, configfile)
 
 # Send a file using udpcast
-def send_file(file_path, interface, ip_out, port_base, max_bitrate):
-    command = f'udp-sender --async --fec 4x4 --max-bitrate {max_bitrate}m \
+def send_file(file_path, interface, ip_out, port_base, max_bitrate, fec):
+    command = f'udp-sender --async --fec {fec} --max-bitrate {max_bitrate}m \
                 --mcast-rdv-addr {ip_out} --mcast-data-addr {ip_out} \
                 --portbase {port_base} --autostart 1 \
                 --interface {interface} -f "{file_path}"'
     log.debug(command)
-    (_, err) = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()
+    (_, err) = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()
     if err:
       log.error(err)
     time.sleep(1.5)
@@ -72,7 +72,8 @@ def file_copy(params):
               params[1]['interface_in'],
               params[1]['ip_out'],
               int(params[1]['port']) + 2,
-              params[1]['bitrate'])
+              params[1]['bitrate'],
+              params[1]['fec'])
     log.debug('Deleting manifest file')
     os.remove(manifest_filename)
     for f in files:
@@ -82,7 +83,8 @@ def file_copy(params):
                   params[1]['interface_in'],
                   params[1]['ip_out'],
                   params[1]['port'],
-                  params[1]['bitrate'])
+                  params[1]['bitrate'],
+                  params[1]['fec'])
         log.info('Deleting: ' + f)
         if delete:
             os.remove(f)

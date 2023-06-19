@@ -1,24 +1,24 @@
 config_name: "Dyode Sender"
 config_version: 1.0
-config_date: 10-06-2023
+config_date: 19-06-2023
 
 max_bitrate: 100 # maximum bitrate
 
 dyode_sender:
-  interface: eth0
+  interface: ens33
 
 dyode_receiver:
   ip: 172.10.0.2
-  mac: 40:16:7e:a9:fb:7a
+  # mac: 20:7b:d2:7d:f1:54
     
 
 modules:
   filetransfer:
     type: filetransfer
     port: 9700
-    bitrate: 50 # in Mb/s
-    timeout: 10  # in second
+    bitrate: 20 # in Mb/s
+    # timeout: 10  # in second
     fec: "4x4"   # forward error correction
-    in: /home/suna/dyode
-    out: /home/suna/dyode
-    temp: /home/suna/temp
+    in: /home/highside/dyode
+    out: /home/lowside/dyode
+    temp: /home/highside/temp

@@ -1,8 +1,8 @@
 import logging
 import multiprocessing
 import pyinotify
-import shlex
-from subprocess import Popen, PIPE
+# import shlex
+# from subprocess import Popen, PIPE
 import yaml
 
 import filetransfer
@@ -54,14 +54,14 @@ if __name__ == '__main__':
         max_bitrate = config['max_bitrate']
 
     # Set static ARP
-    output, err = Popen(
-        shlex.split(
-            'arp -s ' + config['dyode_receiver']['ip'] + ' ' + config['dyode_receiver']['mac']),
-        shell=False, stdout=PIPE, stderr=PIPE).communicate()
-    if output:
-        log.debug(output)
-    if err:
-        log.error(err)
+    # output, err = Popen(
+    #     shlex.split(
+    #         'arp -s ' + config['dyode_receiver']['ip'] + ' ' + config['dyode_receiver']['mac']),
+    #     shell=False, stdout=PIPE, stderr=PIPE).communicate()
+    # if output:
+    #     log.debug(output)
+    # if err:
+    #     log.error(err)
 
     modules_quantity = len((config['modules']))
     log.debug(f'Number of modules : {modules_quantity}')
