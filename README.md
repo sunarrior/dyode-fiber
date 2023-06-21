@@ -1,6 +1,8 @@
 # **DYODE FIBER**
 
-This project base on repository: [amirhakh - dyode-half-fiber](https://github.com/amirhakh/data-diode/tree/master/dyode-half-fiber)
+This project base on repository: 
+1. [amirhakh - dyode-half-fiber](https://github.com/amirhakh/data-diode/tree/master/dyode-half-fiber)
+2. [wavestone-cdt - dyode](https://github.com/wavestone-cdt/dyode/tree/master/DYODE%20v1%20(full))
 
 
 ## **Hardware setup**
