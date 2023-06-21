@@ -3,14 +3,14 @@ import errno
 import hashlib
 import logging
 import multiprocessing
-from multiprocessing import Process, Popen, PIPE, Queue
+from multiprocessing import Process, Queue
 import os
 import random
 import shlex
 import shutil
 # Imports
 import string
-import subprocess
+from subprocess import Popen, PIPE
 import json
 
 # Logging
@@ -59,7 +59,7 @@ def check_hash_process(queue):
         h = hash_file(temp_file)
         if h not in hash_list:
             log.error('Invalid checksum for file ' + temp_file + " " + h)
-            with open(failure_log, 'a') as f:
+            with open(failure_log, 'ab') as f:
                 f.write(bytes(h + ' ' + temp_file + '\n', 'utf-8'))
             os.remove(temp_file)
         else:
@@ -73,7 +73,7 @@ def check_hash_process(queue):
                         raise
             shutil.move(temp_file, f)
             log.info('File Available: ' + f)
-            with open(success_log, 'a') as file:
+            with open(success_log, 'ab') as file:
                 file.write(bytes(h + ' ' + f + '\n', 'utf-8'))
     queue.put(None)
 
@@ -98,10 +98,7 @@ def receive_file(file_path, interface, ip_in, port_base, timeout=0):
     if timeout > 0:
         command = f'{command} --start-timeout {timeout} --receive-timeout {timeout}'
     log.debug(command)
-    (output, err) = Popen(shlex.split(command), shell=False, stdout=PIPE,
-                                     stderr=PIPE).communicate()
-    if output:
-        log.debug(output)
+    (_, err) = Popen(shlex.split(command), shell=False, stdout=PIPE).communicate()
     if err:
         log.error(err)
 
@@ -128,8 +125,6 @@ def wait_for_file(queue, params):
         hash_list[h] = f
 
     for f, h in files:
-        # filename = os.path.basename(f)
-        # mkdir on the fly
         temp_file = params['temp'] + '/' + ''.join(
             random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(12))
         receive_file(temp_file, params['interface_out'],

@@ -1,11 +1,12 @@
 import logging
 import multiprocessing
-import pyinotify
-# import shlex
-# from subprocess import Popen, PIPE
+import shlex
+from subprocess import Popen, PIPE
 import yaml
 
 import filetransfer
+import screensharing
+import syslogforwarding
 
 # Logging
 logging.basicConfig()
@@ -13,31 +14,18 @@ log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 
 # Default max bitrate
-max_bitrate = 100
-
-
-class EventHandler(pyinotify.ProcessEvent):
-    def process_IN_CLOSE_WRITE(self, event):
-        log.info(f'New file detected :: {event.pathname}')
-        # If a new file is detected, launch the copy
-        filetransfer.file_copy(multiprocessing.current_process()._args)
-
-
-# When a new file finished copying in the input folder, send it
-def watch_folder(properties):
-    # inotify kernel watchdog
-    wm = pyinotify.WatchManager()
-    mask = pyinotify.IN_CLOSE_WRITE
-    notifier = pyinotify.AsyncNotifier(wm, EventHandler())
-    wdd = wm.add_watch(properties['in'], mask, rec=True, auto_add=True)
-    log.debug(f'watching :: {properties["in"]}')
-    notifier.loop()
-
+max_bitrate = 300
 
 def launch_agents(module, properties):
     if properties['type'] == 'filetransfer':
         log.debug(f'Instanciating a file transfer module :: {module}')
-        watch_folder(properties)
+        filetransfer.watch_folder(properties)
+    elif properties['type'] == 'screen':
+        log.debug(f'Screen sharing agent : ${module}')
+        screensharing.watch_folder(module, properties)
+    elif properties['type'] == 'syslog':
+        log.debug(f'Syslog forwarding agent : ${module}')
+        syslogforwarding.syslog_forwarding(properties)
 
 
 if __name__ == '__main__':
@@ -54,14 +42,12 @@ if __name__ == '__main__':
         max_bitrate = config['max_bitrate']
 
     # Set static ARP
-    # output, err = Popen(
-    #     shlex.split(
-    #         'arp -s ' + config['dyode_receiver']['ip'] + ' ' + config['dyode_receiver']['mac']),
-    #     shell=False, stdout=PIPE, stderr=PIPE).communicate()
-    # if output:
-    #     log.debug(output)
-    # if err:
-    #     log.error(err)
+    (_, err) = Popen(
+        shlex.split(
+            f'arp -s ${config["dyode_receiver"]["ip"]} ${config["dyode_receiver"]["mac"]}'),
+        shell=False, stdout=PIPE).communicate()
+    if err:
+        log.error(err)
 
     modules_quantity = len((config['modules']))
     log.debug(f'Number of modules : {modules_quantity}')

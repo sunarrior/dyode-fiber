@@ -6,19 +6,28 @@ max_bitrate: 100 # maximum bitrate
 
 dyode_sender:
   ip: 172.10.0.1
-  # mac: 20:7b:d2:7d:f2:a3
+  mac: 20:7b:d2:7d:f2:a3
 
 dyode_receiver:
   interface: ens33
+  # interface: enx207bd27df154
     
 
 modules:
   filereceiver:
     type: filereceiver
     port: 9700
-    bitrate: 20 # in Mb/s
-    timeout: 30  # in second
-    fec: "4x4"   # forward error correction
+    timeout: 5  # in second
     in: /home/highside/dyode
     out: /home/lowside/dyode
     temp: /home/lowside/temp
+  screen:
+    type: screen
+    port: 9900
+    http_port: 8080
+  syslog_listener:
+    type: syslog
+    port: 514
+    name: highside_syslog
+    in: /home/lowside/syslog
+    # destination_ip: 172.10.0.2
