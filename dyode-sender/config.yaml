@@ -2,39 +2,31 @@ config_name: "Dyode Sender"
 config_version: 1.0
 config_date: 19-06-2023
 
-max_bitrate: 100 # maximum bitrate
+max_bitrate: 300 # maximum bitrate
 
 dyode_sender:
   interface: ens33
+  # interface: enx207bd27df2a3
 
 dyode_receiver:
   ip: 172.10.0.2
-  # mac: 20:7b:d2:7d:f1:54
+  mac: 20:7b:d2:7d:f1:54
     
 
 modules:
-  filetransfer:
+  file_transfer:
     type: filetransfer
     port: 9700
-    bitrate: 20 # in Mb/s
-    # timeout: 10  # in second
-    fec: "4x4"   # forward error correction
+    bitrate: 100 # in Mb/s
+    fec: "8x16/128"   # forward error correction
     in: /home/highside/dyode
     out: /home/lowside/dyode
     temp: /home/highside/temp
-  # modbus:
-  #   type: modbus
-  #   port: 9500
-  #   ip: 127.0.0.1
-  #   port_out: 503
-  #   registers:
-  #     - 0-10
-  #     - 400-402
-  #   coils:
-  #     - 0-10
-  #     - 100-110
   screen:
     type: screen
     port: 9900
     in: /home/highside/screen
-    out: /home/lowside/screen
+  syslog_forwarding:
+    type: syslog
+    port: 514
+    listen_ip: 172.10.0.1

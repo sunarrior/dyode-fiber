@@ -5,11 +5,30 @@ import os
 import subprocess
 import time
 import json
+import pyinotify
+import multiprocessing
 
 # Logging
 logging.basicConfig()
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
+
+class EventHandler(pyinotify.ProcessEvent):
+    def process_IN_CLOSE_WRITE(self, event):
+        log.info(f'New file detected :: {event.pathname}')
+        # If a new file is detected, launch the copy
+        file_copy(multiprocessing.current_process()._args)
+
+
+# When a new file finished copying in the input folder, send it
+def watch_folder(properties):
+    # inotify kernel watchdog
+    wm = pyinotify.WatchManager()
+    mask = pyinotify.IN_CLOSE_WRITE
+    notifier = pyinotify.AsyncNotifier(wm, EventHandler())
+    wdd = wm.add_watch(properties['in'], mask, rec=True, auto_add=True)
+    log.debug(f'watching :: {properties["in"]}')
+    notifier.loop()
 
 # List all files recursively
 def list_all_files(root_dir):
@@ -29,7 +48,7 @@ def write_manifest(dirs, files, files_hash, manifest_filename, root, new):
         data['files'].append([f.replace(root, new, 1), files_hash[f]])
         log.debug(f + ' :: ' + files_hash[f])
 
-    with open(manifest_filename, 'wb') as configfile:
+    with open(manifest_filename, 'w') as configfile:
         json.dump(data, configfile)
 
 # Send a file using udpcast
@@ -53,7 +72,7 @@ def file_copy(params):
 
     # List and check if any flies or directories exists
     dirs, files = list_all_files(params[1]['in'])
-    if len(files) == 0 or len(dirs) == 0:
+    if len(files) == 0 and len(dirs) == 0:
         log.debug('No file or directory detected')
         return 0
     

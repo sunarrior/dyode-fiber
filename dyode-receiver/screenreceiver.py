@@ -16,7 +16,7 @@ def get_screenshot(port):
     s = socket(AF_INET, SOCK_DGRAM)
     s.bind((receiver_ip, port))
 
-    full_data = ''
+    full_data = b''
     while True:
         data, addr = s.recvfrom(2048)
         if not data:
@@ -31,14 +31,14 @@ def get_screenshot(port):
 
 class CamHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path.endswith('.mjpg'):
+        if self.path.endswith('/cam'):
             self.send_response(200)
             self.send_header('Content-type', 'multipart/x-mixed-replace; boundary=--jpgboundary')
             self.end_headers()
             try:
                 while True:
                     image = get_screenshot(multiprocessing.current_process()._args[1]['port'])
-                    self.wfile.write("--jpgboundary")
+                    self.wfile.write(bytes("--jpgboundary\n", "utf-8"))
                     self.send_header('Content-type', 'image/jpeg')
                     self.send_header('Content-length', len(image))
                     self.end_headers()
@@ -51,16 +51,17 @@ class CamHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
-            self.wfile.write("""<html><head></head><body>
-        <img src="/screen.mjpg"/>
-      </body></html>""")
+            self.wfile.write(bytes("""<html><head></head><body>
+        Visiting /cam to see screen sharing
+      </body></html>""", "utf-8"))
             return
 
 
 def http_server(module, properties):
+    print("starting http server...")
     try:
         receiver_ip = properties['ip_in']
-        server = HTTPServer(('', 8080), CamHandler)
+        server = HTTPServer(('', properties['http_port']), CamHandler)
         server.serve_forever()
     except KeyboardInterrupt:
         server.socket.close()

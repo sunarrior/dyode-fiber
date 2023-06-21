@@ -18,6 +18,7 @@ This project base on repository: [amirhakh - dyode-half-fiber](https://github.co
 ## **Installation dependencies**
 ```shell
 sudo apt install udpcast
+sudo apt install scrot -y
 sudo pip install -r requirement.txt
 ```
 

@@ -12,7 +12,6 @@ import shutil
 import string
 from subprocess import Popen, PIPE
 import json
-import time
 
 # Logging
 logging.basicConfig()
@@ -114,7 +113,6 @@ def wait_for_file(queue, params):
     manifest_filename = params['temp'] + '/manifest_' + process_name + '.json'
     receive_file(manifest_filename, params['interface_out'], params['ip_in'], int(
         params['port']) + 2)
-    time.sleep(1)
     dirs, files = parse_manifest(
         manifest_filename, params['in'], params['out'] + '/')
     if len(files) == 0:
@@ -137,7 +135,6 @@ def wait_for_file(queue, params):
             queue.put((temp_file, hash_list,
                        params['out'] + '/transfer_success.log',
                        params['out'] + '/transfer_failure.log'))
-        time.sleep(1)
 
     os.remove(manifest_filename)
     queue.put((params['temp'], None, None, None))
