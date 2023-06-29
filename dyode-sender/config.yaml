@@ -5,8 +5,8 @@ config_date: 19-06-2023
 max_bitrate: 300 # maximum bitrate
 
 dyode_sender:
-  interface: ens33
-  # interface: enx207bd27df2a3
+  # interface: ens33
+  interface: enx207bd27df2a3
 
 dyode_receiver:
   ip: 172.10.0.2
@@ -29,4 +29,4 @@ modules:
   syslog_forwarding:
     type: syslog
     port: 514
-    listen_ip: 172.10.0.1
+    listen_ip: 0.0.0.0

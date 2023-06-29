@@ -1,13 +1,12 @@
 [Unit]
 Description=Dyode-Sender service
-ConditionPathExists=/opt/dyode-sender/dyode-sender.py
+ConditionPathExists=/home/highside/dyode-fiber/dyode-sender/dyode-sender.py
 After=syslog.target network.target
 Wants=network.service
 
 [Service]
-User=highside
-WorkingDirectory=/opt/dyode-sender/
-ExecStart=/usr/bin/python /opt/dyode-sender/dyode-sender.py
+WorkingDirectory=/home/highside/dyode-fiber/dyode-sender/
+ExecStart=/usr/bin/python3 dyode-sender.py
 Restart=on-failure
 
 [Install]

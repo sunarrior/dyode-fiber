@@ -1,13 +1,12 @@
 [Unit]
 Description=Dyode-Receiver service
-ConditionPathExists=/opt/dyode-receiver/dyode-receiver.py
+ConditionPathExists=/home/lowside/dyode-fiber/dyode-receiver/dyode-receiver.py
 After=syslog.target network.target
 Wants=network.service
 
 [Service]
-User=diode
-WorkingDirectory=/opt/dyode-receiver/
-ExecStart=/usr/bin/python /opt/dyode-receiver/dyode-receiver.py
+WorkingDirectory=/home/lowside/dyode-fiber/dyode-receiver
+ExecStart=/usr/bin/python3 dyode-receiver.py
 Restart=on-failure
 
 [Install]
