@@ -9,8 +9,8 @@ dyode_sender:
   mac: 20:7b:d2:7d:f2:a3
 
 dyode_receiver:
-  interface: ens33
-  # interface: enx207bd27df154
+  # interface: ens33
+  interface: enx207bd27df154
     
 
 modules:
@@ -24,10 +24,10 @@ modules:
   screen:
     type: screen
     port: 9900
-    http_port: 8080
+    http_port: 8081
   syslog_listener:
     type: syslog
     port: 514
-    name: highside_syslog
-    in: /home/lowside/syslog
+    filename: highside_syslog
+    out: /home/lowside/syslog
     # destination_ip: 172.10.0.2

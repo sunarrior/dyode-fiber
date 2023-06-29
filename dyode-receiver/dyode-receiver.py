@@ -1,6 +1,7 @@
 import logging
 from multiprocessing import Process
 import yaml
+import os
 
 import filereceiver
 import screenreceiver
@@ -40,6 +41,10 @@ if __name__ == '__main__':
     for module, properties in modules.items():
         properties['ip_in'] = config['dyode_sender']['ip']
         properties['interface_out'] = config['dyode_receiver']['interface']
+        if properties['out'] and not os.path.exists(properties['out']):
+            os.makedirs(properties['out'])
+        if properties['temp'] and not os.path.exists(properties['temp']):
+            os.makedirs(properties['temp'])
         log.debug(f'Parsing {module}')
         log.debug(f'Trying to launch a new process for module {module}')
         p = Process(name=str(module), target=launch_agents, args=(module, properties))

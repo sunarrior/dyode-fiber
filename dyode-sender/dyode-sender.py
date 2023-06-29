@@ -1,5 +1,6 @@
 import logging
 import multiprocessing
+import os
 import shlex
 from subprocess import Popen, PIPE
 import yaml
@@ -44,7 +45,7 @@ if __name__ == '__main__':
     # Set static ARP
     (_, err) = Popen(
         shlex.split(
-            f'arp -s ${config["dyode_receiver"]["ip"]} ${config["dyode_receiver"]["mac"]}'),
+            f'arp -s {config["dyode_receiver"]["ip"]} {config["dyode_receiver"]["mac"]}'),
         shell=False, stdout=PIPE).communicate()
     if err:
         log.error(err)
@@ -55,25 +56,17 @@ if __name__ == '__main__':
     # Get modules config
     modules = config.get('modules')
 
-    # Check if any modules have no bitrate config
-    modules_without_bitrate = 0
-    for module, properties in modules.items():
-        if 'bitrate' in properties:
-            max_bitrate = max_bitrate - properties['bitrate']
-        else:
-            modules_without_bitrate = modules_without_bitrate + 1
-    if max_bitrate < 0:
-        log.error('Sum of bitrate is bigger than the maximum defined !')
-        exit(1)
-
     # Iterate on modules
     for module, properties in modules.items():
         properties['ip_out'] = config['dyode_receiver']['ip']
         properties['interface_in'] = config['dyode_sender']['interface']
-        if 'bitrate' not in properties:
-            properties['bitrate'] = max_bitrate // modules_without_bitrate
+        if properties['in'] and not os.path.exists(properties['in']):
+            os.makedirs(properties['in'])
+        if properties['temp'] and not os.path.exists(properties['temp']):
+            os.makedirs(properties['temp'])
         log.debug(f'Parsing {module}')
         log.debug(f'Trying to launch a new process for module {module}')
         p = multiprocessing.Process(
             name=str(module), target=launch_agents, args=(module, properties))
         p.start()
+1

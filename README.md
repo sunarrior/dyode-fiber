@@ -20,6 +20,7 @@ This project base on repository:
 ## **Enviroment setup**
 > Python 3.10.4 \
 > Ubuntu 22.04 \
+> On user login screen, change setting from ...
 > Static ip highside: 172.10.0.1/30 \
 > Static ip lowside: 172.10.0.2/30
 

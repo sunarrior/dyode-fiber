@@ -1,10 +1,28 @@
 #!/usr/bin/tclsh
 package require udp ; # load the required UDP Package
 
-echo "press CTRL-C to stop." ;
+# echo "press CTRL-C to stop." ;
 
 set port 514 ; # default SYSlog port
-set logfile "/home/lowside/syslog/highside_syslog.log" ; # set the log filename to log data to
+set dir "/home/lowside/syslog" ; # default syslog directory
+set logfile "/home/lowside/syslog/syslog.log" ; # set the log filename to log data to
+
+foreach {flag value} $argv {
+    switch $flag {
+        -p - --port {
+        	set port $value ;
+        }
+        -d - --dir {
+        	set dir $value ;
+        }
+        -f - --file {
+        	set logfile $value ;
+        }
+    }
+}  
+exec mkdir -p $dir ;
+exec touch -a $logfile ;
+
 
 # Capture the UDP data here
 proc udp_triggered {} {
