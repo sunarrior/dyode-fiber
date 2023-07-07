@@ -25,7 +25,7 @@ def screen_listener(module, properties):
                         break
                     msg_length = struct.unpack('>I', data[:4])[0]
                     full_data += data[4:(msg_length + 4)]
-                    fw.write(data)
+                fw.write(full_data)
                 fw.close()
     except KeyboardInterrupt:
         s.close()

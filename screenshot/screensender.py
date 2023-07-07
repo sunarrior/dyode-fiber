@@ -43,7 +43,7 @@ class ScreenshotHandler(pyinotify.ProcessEvent):
     def process_IN_CLOSE_WRITE(self, event):
         current_process = multiprocessing.current_process()
         log.debug('New screenshot detected !')
-        screen_file_copy(event.pathname, current_process._args)
+        screen_file_copy(event.pathname, current_process._args[0])
 
 
 def watch_folder(params):
@@ -62,5 +62,5 @@ if __name__ == '__main__':
   }
 
   p = multiprocessing.Process(
-      name='screen_capture', target=watch_folder, args=(params))
+      name='screen_capture', target=watch_folder, args=(params,))
   p.start()
