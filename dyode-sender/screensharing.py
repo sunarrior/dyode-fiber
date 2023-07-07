@@ -34,7 +34,7 @@ def screen_file_copy(file, params):
         s.sendto(msg, addr)
         time.sleep(0.0002)
         i += 1
-    s.sendto('', addr)
+    s.sendto(b'', addr)
     s.close()
     f.close()
 
