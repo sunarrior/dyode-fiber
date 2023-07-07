@@ -5,7 +5,7 @@ package require udp ; # load the required UDP Package
 
 set port 514 ; # default SYSlog port
 set dir "/home/lowside/syslog" ; # default syslog directory
-set logfile "/home/lowside/syslog/syslog.log" ; # set the log filename to log data to
+set logfile "syslog" ; # set the log filename to log data to
 
 foreach {flag value} $argv {
     switch $flag {
@@ -19,16 +19,17 @@ foreach {flag value} $argv {
         	set logfile $value ;
         }
     }
-}  
+} 
+set full_path "$dir/$logfile.log" ;
 exec mkdir -p $dir ;
-exec touch -a $logfile ;
+exec touch -a $full_path;
 
 
 # Capture the UDP data here
 proc udp_triggered {} {
-    global dg logfile ; # ensure the global variables work in this procedure
+    global dg full_path ; # ensure the global variables work in this procedure
     set rcdata [read $dg(udp)] ; # grab the UDP data within rcdata
-    set udp_log [open $logfile a] ; # open the specified logfile to append to (auto-creates if does not exist)
+    set udp_log [open $full_path a] ; # open the specified logfile to append to (auto-creates if does not exist)
     puts $udp_log $rcdata ; # place the UDP data line into the log file
     close $udp_log ; # close the log file
     return

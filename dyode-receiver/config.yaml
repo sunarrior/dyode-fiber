@@ -30,4 +30,3 @@ modules:
     port: 514
     filename: highside_syslog
     out: /home/lowside/syslog
-    # destination_ip: 172.10.0.2

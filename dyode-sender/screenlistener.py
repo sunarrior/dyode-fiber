@@ -8,11 +8,11 @@ port = 9500
 dir = '/home/highside/com1_screen'
 
 def screen_listener(module, properties):
-    s = socket(AF_INET, SOCK_DGRAM)
-    s.bind((src, port))
     src = properties['src']
     port = properties['port']
     dir = properties['in']
+    s = socket(AF_INET, SOCK_DGRAM)
+    s.bind((src, port))
 
     try:
         while True:

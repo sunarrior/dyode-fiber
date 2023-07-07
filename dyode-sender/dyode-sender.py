@@ -23,13 +23,13 @@ def launch_agents(module, properties):
         log.debug(f'Instanciating a file transfer module :: {module}')
         filetransfer.watch_folder(properties)
     elif properties['type'] == 'screen_listener':
-        log.debug(f'Screen listener agent : ${module}')
+        log.debug(f'Screen listener agent : {module}')
         screenlistener.screen_listener(module, properties)
     elif properties['type'] == 'screen':
-        log.debug(f'Screen sharing agent : ${module}')
+        log.debug(f'Screen sharing agent : {module}')
         screensharing.watch_folder(module, properties)
     elif properties['type'] == 'syslog':
-        log.debug(f'Syslog forwarding agent : ${module}')
+        log.debug(f'Syslog forwarding agent : {module}')
         syslogforwarding.syslog_forwarding(properties)
 
 
