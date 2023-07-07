@@ -23,6 +23,7 @@ modules:
     out: /home/lowside/dyode
     temp: /home/highside/temp
   screen_listener:
+    type: screen_listener
     src: 172.10.0.128
     port: 9500
     in: /home/highside/com1_screen
