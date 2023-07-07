@@ -22,10 +22,14 @@ modules:
     in: /home/highside/dyode
     out: /home/lowside/dyode
     temp: /home/highside/temp
+  screen_listener:
+    src: 172.10.0.128
+    port: 9500
+    in: /home/highside/com1_screen
   screen:
     type: screen
     port: 9900
-    in: /home/highside/screen
+    in: /home/highside/com1_screen
   syslog_forwarding:
     type: syslog
     port: 514
