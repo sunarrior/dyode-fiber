@@ -1,0 +1,32 @@
+config_name: "Dyode Receiver"
+config_version: 1.0
+config_date: 19-06-2023
+
+max_bitrate: 100 # maximum bitrate
+
+dyode_sender:
+  ip: 172.10.0.1
+  mac: 20:7b:d2:7d:f2:a3
+
+dyode_receiver:
+  # interface: ens33
+  interface: enx207bd27df154
+    
+
+modules:
+  filereceiver:
+    type: filereceiver
+    port: 9700
+    timeout: 5  # in second
+    in: /home/highside/dyode
+    out: /home/lowside/dyode
+    temp: /home/lowside/temp
+  screen:
+    type: screen
+    port: 9900
+    http_port: 8081
+  syslog_listener:
+    type: syslog
+    port: 514
+    filename: highside_syslog
+    out: /home/lowside/syslog
